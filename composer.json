@@ -1,0 +1,16 @@
+{
+    "name": "chari/basic-woo-discounts",
+    "description": "A simple discounts plugin for woocommerce",
+    "autoload": {
+        "psr-4": {
+            "bcd\\": "includes/classes"
+        }
+    },
+    "authors": [
+        {
+            "name": "Charisv",
+            "email": "charis@dicha.gr"
+        }
+    ],
+    "require": {}
+}

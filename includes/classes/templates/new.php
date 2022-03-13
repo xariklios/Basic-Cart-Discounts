@@ -70,23 +70,24 @@ if (!defined('ABSPATH')) exit; // Exit if accessed directly
             </select>
         </p>
     </div>
-
+    <!-- Discount Type -->
     <div id="discount_type_and_value">
         <div class="">
-            <select name="bcd_discount_type" class="">
-                <option value="percentage" selected="">Percentage discount</option>
-                <option value="flat">Fixed discount</option>
+            <select id="bcd_discount_type" name="bcd_discount_type" class="">
+                <option value="percent" selected>Percentage discount</option>
+                <option value="fixed_cart">Fixed discount</option>
             </select>
-            <span class="wdr_desc_text awdr-clear-both">Discount Type</span>
+            <span class="">Discount Type</span>
         </div>
-
+        <!-- Discount Value -->
         <div class="">
-            <input name="bcd_discount_value" type="number" class="" value="" placeholder="0.00" min="0" step="any"
+            <input id="bcd_discount_value" name="bcd_discount_value" type="number" class="" value="" placeholder="0.00"
+                   min="0" step="any"
                    style="width: 100%;">
             <span class="wdr_desc_text">Value</span>
         </div>
     </div>
 
-    <?php submit_button() ?>
+    <?php submit_button('Add Rule') ?>
 
 </form>

@@ -6,7 +6,10 @@
             e.preventDefault();
 
             let title = $('#title').val();
-            console.log(title)
+            let includedProdIds = $("#_bcd_products_included_ids").val();
+            let discountType = $('#bcd_discount_type').find(":selected").val();
+            let discountValue = $('#bcd_discount_value').val();
+
 
             $.ajax({
                 type: 'POST',
@@ -14,6 +17,9 @@
                 data: {
                     action: 'create_new_rule',
                     title: title,
+                    includedProdIds: includedProdIds,
+                    discountType: discountType,
+                    discountValue: discountValue
                 },
                 success: function () {
                     console.log('entered')

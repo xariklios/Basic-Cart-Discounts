@@ -13,12 +13,8 @@
  */
 
 /* Get All discount Rules */
-$args = array(
-    'post_type' => 'discount_rules',
-    'posts_per_page' => -1
-);
 
-$query = new WP_Query($args);
+$activeRules = \bcd\Database::bcd_fetch_active_rules();
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -33,13 +29,5 @@ $query = new WP_Query($args);
         <th>Status</th>
         <th>Actions</th>
     </tr>
-    <?php
-    if ($query->have_posts()) :
-        while ($query->have_posts()) : $query->the_post();
-            echo '<td>' . get_the_ID() . '</td>';
-            echo '<td>' . get_the_title() . '</td>';
-        endwhile;
-        echo '</select>';
-        wp_reset_postdata();
-    endif; ?>
+
 </table>

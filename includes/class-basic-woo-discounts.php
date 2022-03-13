@@ -160,7 +160,8 @@ class Basic_Woo_Discounts
     {
 
         $plugin_admin = new Basic_Woo_Discounts_Admin($this->get_plugin_name(), $this->get_version());
-        $utils = new bcd\Utils();
+        $utils = new \bcd\Utils();
+        $woohandler = new \bcd\Woocommerce();
 
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
@@ -169,10 +170,14 @@ class Basic_Woo_Discounts
         /* custom hooks */
         $this->loader->add_action('admin_menu', $plugin_admin, 'register_bcd_submenu_page');
 
-        $this->loader->add_action('init', $utils, 'bcd_generate_discount_rules_post_type');
-
         $this->loader->add_action('wp_ajax_create_new_rule', $plugin_admin, 'create_new_rule');
         $this->loader->add_action('wp_ajax_nopriv_create_new_rule', $plugin_admin, 'create_new_rule');
+
+        /* Woocommerce */
+        $this->loader->add_action('woocommerce_before_cart', $plugin_admin, 'bcd_add_cart_discount');
+        $this->loader->add_action('woocommerce_before_checkout_form', $plugin_admin, 'bcd_add_cart_discount');
+
+        $this->loader->add_action('pre_get_posts', $plugin_admin, 'bcd_manage_admin_coupon_list',9999);
 
         /* Import Woocommerce scripts */
         $this->loader->add_action('admin_footer', $plugin_admin, 'bcd_import_woo_scripts', 99);

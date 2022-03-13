@@ -158,7 +158,11 @@ class Basic_Woo_Discounts_Admin
     function create_new_rule()
     {
         $woohandler = new \bcd\Woocommerce();
-        $woohandler->bcd_add_new_rule($_POST);
+        $newRule = $woohandler->bcd_add_new_rule($_POST);
+
+        if ($newRule) {
+            wp_send_json_success($newRule);
+        }
     }
 
     function bcd_import_woo_scripts()
@@ -171,4 +175,36 @@ class Basic_Woo_Discounts_Admin
         }
     }
 
+    function bcd_add_cart_discount($cart)
+    {
+
+        if (is_admin() && !defined('DOING_AJAX')) {
+            return;
+        }
+
+        $wooHandler = new \bcd\Woocommerce();
+        $wooHandler->bcd_create_cart_discounts($cart);
+    }
+
+    function bcd_manage_admin_coupon_list($query)
+    {
+        if (!is_admin()) {
+            return;
+        }
+
+        global $pagenow;
+
+        if ($query->is_admin && $pagenow == 'edit.php' && $_GET['post_type'] == 'shop_coupon') {
+
+            $meta_query[] = $query->get('meta_query', []);
+            $meta_query = array(
+                array(
+                    'key' => '_bcd_discount_rule',
+                    'compare' => 'NOT EXISTS',
+                ),
+            );
+
+            $query->set('meta_query', $meta_query);
+        }
+    }
 }

@@ -27,6 +27,18 @@ if (!defined('ABSPATH')) exit; // Exit if accessed directly
                    placeholder="<?php _e('Enter title here', 'bcd'); ?>">
         </div>
     </div>
+    <div id="min_amount">
+        <input id="bcd_discount_min_amount" name="bcd_discount_min_amount" type="number" class="" value=""
+               placeholder="0.00"
+               min="0" step="any">
+        <span class="wdr_desc_text">Min</span>
+    </div>
+    <div id="max_amount">
+        <input id="bcd_discount_max_amount" name="bcd_discount_max_amount" type="number" class="" value=""
+               placeholder="0.00"
+               min="0" step="any">
+        <span class="wdr_desc_text">Max</span>
+    </div>
     <!-- Include Products -->
     <div id="include_products">
         <p class="form-field">
@@ -82,8 +94,8 @@ if (!defined('ABSPATH')) exit; // Exit if accessed directly
         <!-- Discount Value -->
         <div class="">
             <input id="bcd_discount_value" name="bcd_discount_value" type="number" class="" value="" placeholder="0.00"
-                   min="0" step="any"
-                   style="width: 100%;">
+                   min="0" step="any">
+            min="0" step="any">
             <span class="wdr_desc_text">Value</span>
         </div>
     </div>

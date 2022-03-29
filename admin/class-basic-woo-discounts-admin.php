@@ -76,7 +76,7 @@ class Basic_Woo_Discounts_Admin
          * class.
          */
 
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/basic-woo-discounts-admin.css', array(), $this->version, 'all');
+        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/basic-woo-discounts-admin.css', array(), time(), 'all');
 
     }
 
@@ -155,8 +155,13 @@ class Basic_Woo_Discounts_Admin
         require_once plugin_dir_path(__DIR__) . 'includes/classes/templates/new.php';
     }
 
-    function create_new_rule()
+    /**
+     *The create new rule ajax callback function
+     * @since    1.0.0
+     */
+    function bcd_create_new_rule()
     {
+        //todo create nonce
         $woohandler = new \bcd\Woocommerce();
         $newRule = $woohandler->bcd_add_new_rule($_POST);
 
@@ -165,6 +170,23 @@ class Basic_Woo_Discounts_Admin
         }
     }
 
+    /*
+     * The create update rule status ajax callback function
+     */
+    function bcd_update_rule_status()
+    {
+        //todo create nonce
+
+        if (!$_POST['id']) {
+            wp_send_json_error('error', 400);
+        }
+
+        $updated_status = \bcd\Database::bcd_toggle_rule_status($_POST['id']);
+
+        wp_send_json_success($updated_status, 200);
+    }
+
+    /* Import woo scripts in order to use multi selections */
     function bcd_import_woo_scripts()
     {
         $curScreen = get_current_screen();
@@ -175,6 +197,11 @@ class Basic_Woo_Discounts_Admin
         }
     }
 
+    /**
+     * @param $cart
+     *
+     * @since    1.0.0
+     */
     function bcd_add_cart_discount($cart)
     {
 
@@ -186,8 +213,17 @@ class Basic_Woo_Discounts_Admin
         $wooHandler->bcd_create_cart_discounts($cart);
     }
 
+    /**
+     * @param $query
+     *
+     * Remove Plugin made coupons
+     * from classic made coupon list
+     *
+     * @since    1.0.0
+     */
     function bcd_manage_admin_coupon_list($query)
     {
+
         if (!is_admin()) {
             return;
         }
@@ -206,5 +242,22 @@ class Basic_Woo_Discounts_Admin
 
             $query->set('meta_query', $meta_query);
         }
+    }
+
+    function bcd_remove_coupon_html($coupon_html, $coupon, $discount_amount_html)
+    {
+        if (str_starts_with($coupon->code, "bcd_")) {
+            return $discount_amount_html;
+        }
+        return $coupon_html;
+    }
+
+    function bcd_hide_coupon_code( $label, $coupon ) {
+
+        if (str_starts_with($coupon->code, "bcd_")) {
+            return apply_filters('bcd_discount_name', __('Discount'), $coupon);
+        }
+
+        return $label;
     }
 }
